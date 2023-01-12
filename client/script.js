@@ -63,7 +63,7 @@ const handleSubmit = async (e) => {
   
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  // chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
 
   // scroll to the bottom of the chat container
   chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -89,12 +89,9 @@ const handleSubmit = async (e) => {
         if (response.ok) {
           const data = await response.json();
           const parsedData = data.bot.trim();
-      
-          const uniqueId = generateUniqueId();
-          chatContainer.innerHTML += chatStripe(true, parsedData, uniqueId);
+
           typeText(messageDiv, parsedData);
-      }
-       else {
+        } else {
           const err = await response.text();
 
           messageDiv.textContent = "Something went wrong";
