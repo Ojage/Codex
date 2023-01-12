@@ -6,8 +6,8 @@ const chatContainer = document.querySelector('#chat-container');
 const textArea = document.querySelector("textarea[name='prompt']");
 
 
+
 let loadInterval;
-textArea.focus();
 
 const loader = (element) => {
 	element.textContent = '';
@@ -57,16 +57,17 @@ const chatStripe = (isAi, value, uniqueId) => `
   `;
 
 const handleSubmit = async (e) => {
-  e.preventDefault();
   form.reset();
+  e.preventDefault();
+  textArea.focus();
   const data = new FormData(form);
-  const prompt = data.get("prompt");
+
   // generate the users chat stripe
-  chatContainer.innerHTML += chatStripe(false, prompt);
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, '', uniqueId);
+  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
 
   // scroll to the bottom of the chat container
   chatContainer.scrollTop = chatContainer.scrollHeight;
