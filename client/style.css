@@ -50,6 +50,7 @@ body {
 	padding: 15px;
 }
 .user {
+	height: fit-content;
 	background: rgba(52, 53, 65, 0.39);
 	border-radius: 16px;
 	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -143,6 +144,9 @@ textarea {
 	width: 100%;
 	border: none;
 	color: #fff;
+	max-height: 200px;
+    height: 24px;
+    overflow-y: hidden;
 	font-size: 18px;
 	outline: none;
 	padding: 10px;
