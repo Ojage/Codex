@@ -3,8 +3,11 @@ import user from './assets/user.svg';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat-container');
+const textArea = document.querySelector("textarea[name='prompt']");
+
 
 let loadInterval;
+textArea.focus();
 
 const loader = (element) => {
 	element.textContent = '';
@@ -55,7 +58,7 @@ const chatStripe = (isAi, value, uniqueId) => `
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-
+  form.reset();
   const data = new FormData(form);
 
   // generate the users chat stripe
@@ -97,6 +100,8 @@ const handleSubmit = async (e) => {
           messageDiv.textContent = "Something went wrong";
           alert(err);
         }
+
+        
 }
 
 form.onsubmit = handleSubmit;
