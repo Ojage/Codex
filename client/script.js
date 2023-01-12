@@ -60,13 +60,13 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   form.reset();
   const data = new FormData(form);
-
+  const prompt = data.get("prompt");
   // generate the users chat stripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  chatContainer.innerHTML += chatStripe(false, prompt);
   
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  chatContainer.innerHTML += chatStripe(true, '', uniqueId);
 
   // scroll to the bottom of the chat container
   chatContainer.scrollTop = chatContainer.scrollHeight;
