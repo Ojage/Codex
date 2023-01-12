@@ -3,6 +3,8 @@ import user from './assets/user.svg';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat-container');
+const textArea = document.querySelector("textarea[name='prompt']");
+textArea.focus();
 
 let loadInterval;
 
@@ -103,9 +105,10 @@ const handleSubmit = async (e) => {
         }
 }
 
-form.addEventListener('submit', handleSubmit);
-form.addEventListener('key-up', (e) => {
-  if (e.keyCode === 13) {
-    handleSubmit(e);
-  }
-})
+form.onsubmit = handleSubmit;
+form.onkeyup = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSubmit(e);
+    }
+};
