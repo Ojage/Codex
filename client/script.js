@@ -8,6 +8,7 @@ const textArea = document.querySelector("textarea[name='prompt']");
 
 
 let loadInterval;
+textArea.focus();
 
 const loader = (element) => {
 	element.textContent = '';
@@ -59,7 +60,6 @@ const chatStripe = (isAi, value, uniqueId) => `
 const handleSubmit = async (e) => {
   form.reset();
   e.preventDefault();
-  textArea.focus();
   const data = new FormData(form);
 
   // generate the users chat stripe
