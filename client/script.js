@@ -3,14 +3,10 @@ import user from './assets/user.svg';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat-container');
-const textArea = document.querySelector("textarea[name='prompt']");
-
-
 
 let loadInterval;
-textArea.focus();
 
-const loader = (element) => {
+function loader(element) {
 	element.textContent = '';
 
 	loadInterval = setInterval(() => {
@@ -22,7 +18,7 @@ const loader = (element) => {
 	}, 300);
 }
 
-const typeText = (element, text) => {
+function typeText(element, text) {
 	let index = 0;
 	let interval = setInterval(() => {
 		if (index < text.length) {
@@ -34,7 +30,7 @@ const typeText = (element, text) => {
 	}, 20);
 }
 
-const generateUniqueId = () => {
+function generateUniqueId() {
 	const timeStamp = Date.now();
 	const randomNum = Math.floor(Math.random() * 1000);
 	const hexadecimal = randomNum.toString(16);
@@ -42,7 +38,8 @@ const generateUniqueId = () => {
 	return `id-${timeStamp}-${hexadecimal}`;
 }
 
-const chatStripe = (isAi, value, uniqueId) => `
+function chatStripe(isAi, value, uniqueId) {
+	return `
     <div class="wrapper ${isAi ? 'ai' : 'user'}">
       <div class="chat">
         <div class="profile">
@@ -56,15 +53,18 @@ const chatStripe = (isAi, value, uniqueId) => `
       </div>
     </div>
   `;
+}
 
 const handleSubmit = async (e) => {
-  form.reset();
   e.preventDefault();
+
   const data = new FormData(form);
 
   // generate the users chat stripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
-  
+
+  form.reset();
+
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
@@ -101,14 +101,11 @@ const handleSubmit = async (e) => {
           messageDiv.textContent = "Something went wrong";
           alert(err);
         }
-
-        
 }
 
-form.onsubmit = handleSubmit;
-form.onkeyup = (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        handleSubmit(e);
-    }
-};
+form.addEventListener('submit', handleSubmit);
+form.addEventListener('key-up', (e) => {
+  if (e.keyCode === 13) {
+    handleSubmit(e);
+  }
+})
