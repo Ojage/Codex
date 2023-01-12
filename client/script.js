@@ -6,7 +6,7 @@ const chatContainer = document.querySelector('#chat-container');
 
 let loadInterval;
 
-function loader(element) {
+const loader = (element) => {
 	element.textContent = '';
 
 	loadInterval = setInterval(() => {
@@ -18,7 +18,7 @@ function loader(element) {
 	}, 300);
 }
 
-function typeText(element, text) {
+const typeText = (element, text) => {
 	let index = 0;
 	let interval = setInterval(() => {
 		if (index < text.length) {
@@ -30,7 +30,7 @@ function typeText(element, text) {
 	}, 20);
 }
 
-function generateUniqueId() {
+const generateUniqueId = () => {
 	const timeStamp = Date.now();
 	const randomNum = Math.floor(Math.random() * 1000);
 	const hexadecimal = randomNum.toString(16);
@@ -38,8 +38,7 @@ function generateUniqueId() {
 	return `id-${timeStamp}-${hexadecimal}`;
 }
 
-function chatStripe(isAi, value, uniqueId) {
-	return `
+const chatStripe = (isAi, value, uniqueId) => `
     <div class="wrapper ${isAi ? 'ai' : 'user'}">
       <div class="chat">
         <div class="profile">
@@ -53,7 +52,6 @@ function chatStripe(isAi, value, uniqueId) {
       </div>
     </div>
   `;
-}
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -62,12 +60,10 @@ const handleSubmit = async (e) => {
 
   // generate the users chat stripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
-
-  form.reset();
-
+  
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  // chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
 
   // scroll to the bottom of the chat container
   chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -93,9 +89,12 @@ const handleSubmit = async (e) => {
         if (response.ok) {
           const data = await response.json();
           const parsedData = data.bot.trim();
-
+      
+          const uniqueId = generateUniqueId();
+          chatContainer.innerHTML += chatStripe(true, parsedData, uniqueId);
           typeText(messageDiv, parsedData);
-        } else {
+      }
+       else {
           const err = await response.text();
 
           messageDiv.textContent = "Something went wrong";
@@ -103,9 +102,10 @@ const handleSubmit = async (e) => {
         }
 }
 
-form.addEventListener('submit', handleSubmit);
-form.addEventListener('key-up', (e) => {
-  if (e.keyCode === 13) {
-    handleSubmit(e);
-  }
-})
+form.onsubmit = handleSubmit;
+form.onkeyup = (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSubmit(e);
+    }
+};
